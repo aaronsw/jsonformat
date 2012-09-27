@@ -35,16 +35,16 @@ A simple `go get` should do the trick
 
 #### template
 
-    $ cat json.txt | jsonformat -format template '{{.Name.FirstName}} {{.Name.LastName}} - {{.NetWorth|dec(2)}}'
+    $ cat json.txt | jsonformat -f template -s '{{.Name.FirstName}} {{.Name.LastName}} - {{.NetWorth|dec(2)}}'
     John Doe - 22.23
     Jane Doe - 250123.20
 
 #### csv
 
-    $ cat json.txt | jsonformat -format csv 'Name.FirstName=First Name|str,Name.LastName=Last Name|str,NetWorth=Net Worth|dec(3)'
+    $ cat json.txt | jsonformat -f csv -s 'Name.FirstName=First Name|str,Name.LastName=Last Name|str,NetWorth=Net Worth|dec(3)'
     First Name,Last Name,Net Worth
     "John","Doe",22.230
     "Jane","Doe",250123.200
 
 ---
-Version 0.3.1
+Version 0.4.0
