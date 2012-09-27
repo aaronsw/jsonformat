@@ -17,8 +17,8 @@ const (
 var (
 	options = struct {
 		Continue      bool   `goptions:"-c, --continue, description='Continue on error'"`
-		FormatFile    string `goptions:"-r, --format-file, description='Read format from file', mutexgroup='input'"`
-		FormatString  string `goptions:"-s, --format-string, description='Format string', mutexgroup='input'"`
+		FormatFile    string `goptions:"-r, --format-file, description='Read format from file', mutexgroup='input', obligatory"`
+		FormatString  string `goptions:"-s, --format-string, description='Format string', mutexgroup='input', obligatory"`
 		Format        string `goptions:"-f, --format, obligatory, description='Name for the formatter'"`
 		goptions.Help `goptions:"-h, --help, description='Show this help'`
 	}{
@@ -28,11 +28,10 @@ var (
 
 func main() {
 	err := goptions.Parse(&options)
-	if err != nil || (len(options.FormatFile) <= 0 && len(options.FormatString) <= 0) {
-		if err == nil {
-			err = fmt.Errorf("One of --format-file and --format-string must be specified")
+	if err != nil {
+		if err != goptions.ErrHelpRequest {
+			fmt.Printf("Error: %s\n", err)
 		}
-		fmt.Printf("Error: %s\n", err)
 		goptions.PrintHelp()
 		fmt.Println("Formatters:")
 		for name, format := range Formats {
